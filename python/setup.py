@@ -1,5 +1,4 @@
 from setuptools import setup, Extension
-import numpy as np
 from codecs import open
 import os
 import sys
@@ -54,6 +53,12 @@ here = os.path.abspath(os.path.dirname(__file__))
 with open(os.path.join(here, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
 
+
+def numpy_deps():
+    import numpy
+    return numpy.get_include()
+
+
 setup(
     # Information
     name = "lws",
@@ -70,7 +75,7 @@ setup(
     # Build instructions
     ext_modules = [Extension("lws",
                              sources=[lws_module_src, "lwslib/lwslib.cpp"],
-                             include_dirs=["lwslib/", np.get_include()],
+                             include_dirs=["lwslib/", numpy_deps()],
                              language="c++",
                              extra_compile_args=["-O3"])],
     cmdclass = cmdclass,    
@@ -84,5 +89,5 @@ setup(
         "Programming Language :: Python :: 3.5",
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
-    ], install_requires=['numpy']
+    ]
 )
